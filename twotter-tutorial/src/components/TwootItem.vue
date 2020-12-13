@@ -20,11 +20,11 @@ export default {
       required: true,
     },
   },
-  methods: {
-    favouriteTwoot(id) {
-      this.$emit("favourite", id);
-    },
-  },
+  // methods: {
+  //   favouriteTwoot(id) {
+  //     this.$emit("favourite", id);
+  //   },
+  // },
 };
 </script>
 
@@ -32,7 +32,7 @@ export default {
 .twoot-item {
   padding: 20px;
   margin-top: 20px;
-  margin-right: 20px;
+  margin-right: 50px;
   background-color: white;
   border-radius: 5px;
   border: 1px solid #dfe3eb;

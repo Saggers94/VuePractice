@@ -2,8 +2,8 @@
   <div class="user-profile">
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
-        <h1 class="user-profile__username">@{{ user.username }}</h1>
-        <div class="user-profile__admin_badge" v-if="user.is_admin">
+        <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+        <div class="user-profile__admin_badge" v-if="state.user.is_admin">
           Admin
         </div>
 
@@ -15,7 +15,7 @@
       </div> -->
 
         <div class="user-profile__follower-count">
-          <strong>Followers: </strong> {{ followers }}
+          <strong>Followers: </strong> {{ state.followers }}
         </div>
       </div>
 
@@ -23,11 +23,10 @@
     </div>
     <div class="user-profile__twoots-wrapper">
       <TwootItem
-        v-for="twoot in user.twoots"
+        v-for="twoot in state.user.twoots"
         v-bind:key="twoot.id"
         v-bind:twoot="twoot"
-        v-bind:username="user.username"
-        v-on:favourite="toggleFavourite"
+        v-bind:username="state.user.username"
       ></TwootItem>
     </div>
   </div>
@@ -36,12 +35,13 @@
 <script>
 import CreateTwootPanel from "./CreateTwootPanel.vue";
 import TwootItem from "./TwootItem";
+import { reactive } from "vue";
 
 export default {
   name: "UserProfile",
   components: { CreateTwootPanel, TwootItem },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
@@ -55,8 +55,38 @@ export default {
           { id: 2, content: "Don't forget to subscribe to earth is square!" },
         ],
       },
+    });
+
+    function addTwoot(twoot) {
+      state.user.twoots.unshift({
+        id: state.user.twoots.length + 1,
+        content: twoot,
+      });
+    }
+
+    return {
+      state,
+      addTwoot,
     };
   },
+  //Old way of doing things.
+  // data() {
+  //   return {
+  //     followers: 0,
+  //     user: {
+  //       id: 1,
+  //       username: "_SagarParmar",
+  //       firstname: "Saggers",
+  //       lastname: "Par",
+  //       email: "sagar@gmail.com",
+  //       is_admin: true,
+  //       twoots: [
+  //         { id: 1, content: "Twooter is amazing!" },
+  //         { id: 2, content: "Don't forget to subscribe to earth is square!" },
+  //       ],
+  //     },
+  //   };
+  // },
   // watch: {
   //   followers(newFollowerCount, oldFollowerCount) {
   //     if (newFollowerCount > oldFollowerCount) {
@@ -69,17 +99,20 @@ export default {
   //     return this.user.firstname + " " + this.user.lastname;
   //   },
   // },
-  methods: {
-    // followUser() {
-    //   this.followers++;
-    // },
-    // toggleFavourite(id) {
-    //   console.log(`Favourite Tweeet #${id}`);
-    // },
-    addTwoot(twoot) {
-      this.user.unshift({ id: this.user.twoots.length + 1, content: twoot });
-    },
-  },
+  // methods: {
+  // followUser() {
+  //   this.followers++;
+  // },
+  // toggleFavourite(id) {
+  //   console.log(`Favourite Tweeet #${id}`);
+  // },
+  //   addTwoot(twoot) {
+  //     this.user.twoots.unshift({
+  //       id: this.user.twoots.length + 1,
+  //       content: twoot,
+  //     });
+  //   },
+  // },
   // mounted() {
   //   this.followUser();
   // },
