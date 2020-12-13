@@ -28,22 +28,28 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .twoot-item {
   padding: 20px;
-  backgorund-color: white;
+  margin-top: 20px;
+  margin-right: 20px;
+  background-color: white;
   border-radius: 5px;
   border: 1px solid #dfe3eb;
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.25s ease;
-}
 
-.twoot-item:hover {
-  transform: scale(1.1, 1.1);
-}
+  &:first-child {
+    margin-top: 0;
+  }
+  //'&' in scss would add hovering on to the main class name inside which the hovering is nested
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
 
-.twoot-item__user {
-  font-weight: bold;
+  .twoot-item__user {
+    font-weight: bold;
+  }
 }
 </style>
