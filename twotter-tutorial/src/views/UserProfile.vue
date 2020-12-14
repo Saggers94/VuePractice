@@ -3,6 +3,7 @@
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
         <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+        <h2>{{ userId }}</h2>
         <div class="user-profile__admin_badge" v-if="state.user.is_admin">
           Admin
         </div>
@@ -33,28 +34,25 @@
 </template>
 
 <script>
-import CreateTwootPanel from "./CreateTwootPanel.vue";
-import TwootItem from "./TwootItem";
-import { reactive } from "vue";
+import CreateTwootPanel from "../components/CreateTwootPanel";
+import TwootItem from "../components/TwootItem";
+
+//you have to use curly braces while importing users otherwise it doesn't work.
+import { users } from "../assets/users";
+import { reactive, computed } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   name: "UserProfile",
   components: { CreateTwootPanel, TwootItem },
   setup() {
+    const route = useRoute();
+    const userId = computed(() => route.params.userId);
+
+    //If you want to use computed property within the set up function than you have to use '.value'
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: "_SagarParmar",
-        firstname: "Saggers",
-        lastname: "Par",
-        email: "sagar@gmail.com",
-        is_admin: true,
-        twoots: [
-          { id: 1, content: "Twooter is amazing!" },
-          { id: 2, content: "Don't forget to subscribe to earth is square!" },
-        ],
-      },
+      user: users[userId.value - 1] || users[0],
     });
 
     function addTwoot(twoot) {
@@ -67,6 +65,7 @@ export default {
     return {
       state,
       addTwoot,
+      userId,
     };
   },
   //Old way of doing things.

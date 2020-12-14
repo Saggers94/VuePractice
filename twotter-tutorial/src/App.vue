@@ -1,19 +1,21 @@
 <template>
   <div id="app">
     <nav>
-      <div id="navigation_logo">Twotter</div>
-      <div class="navigation_user">{{ user.username }}</div>
+      <router-link to="/">
+        <div id="navigation_logo">Twotter</div>
+      </router-link>
+      <router-link to="/user/:userId">
+        <div class="navigation_user">{{ user.username }}</div>
+      </router-link>
     </nav>
-    <UserProfile />
+    <router-view />
   </div>
 </template>
 
 <script>
-import UserProfile from "./components/UserProfile";
-
 export default {
   name: "app",
-  components: { UserProfile },
+
   data() {
     return {
       user: {
