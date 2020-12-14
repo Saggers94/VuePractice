@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import UserProfile from "../views/UserProfile.vue";
 import Admin from "../views/Admin.vue";
+
+import store from "../store";
+import { users } from "../assets/users";
+
 const routes = [
   {
     path: "/",
@@ -39,6 +43,12 @@ const router = createRouter({
 //Router Guards to limit the access of the regular user and let the admin user
 //sees the admin dashboard page
 router.beforeEach(async (to, from, next) => {
+  console.log(store);
+  const user = store.state.User.user;
+
+  if (!user) {
+    await store.dispatch("User/setUser", users[0]);
+  }
   const isAdmin = false;
   const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
 

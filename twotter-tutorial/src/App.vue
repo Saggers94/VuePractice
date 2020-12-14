@@ -2,25 +2,30 @@
   <div id="app">
     <nav>
       <router-link to="/">
-        <div id="navigation_logo">Twotter</div>
+        <div class="navigation__logo">
+          Twotter
+        </div>
       </router-link>
-      <router-link to="/user/:userId">
-        <div class="navigation_user">{{ user.username }}</div>
-      </router-link>
+      <div class="navigation__user" v-if="user">
+        {{ user.username }}
+      </div>
     </nav>
     <router-view />
   </div>
 </template>
 
 <script>
-export default {
-  name: "app",
+import { useStore } from "vuex";
+import { computed } from "vue";
 
-  data() {
+export default {
+  name: "App",
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
+
     return {
-      user: {
-        username: "__SagarParmar",
-      },
+      user,
     };
   },
 };
@@ -28,7 +33,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -43,12 +48,12 @@ export default {
     background-color: deeppink;
     color: white;
 
-    .navigation_logo {
+    .navigation__logo {
       font-weight: bold;
       font-size: 24px;
     }
 
-    .navigation_user {
+    .navigation__user {
       font-weight: bold;
     }
   }
